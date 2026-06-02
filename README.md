@@ -15,7 +15,7 @@ Landing page de validation avec formulaire waitlist.
 ### Prérequis
 
 - Node.js 20+
-- Un projet Supabase avec la table `waitlist` créée
+- Accès au projet Supabase `ai-sdr-platform`
 
 ### Installation
 
@@ -31,10 +31,14 @@ Copier `.env.example` en `.env.local` et remplir les valeurs :
 cp .env.example .env.local
 ```
 
-- `NEXT_PUBLIC_SUPABASE_URL` : URL du projet Supabase
-- `SUPABASE_SERVICE_ROLE_KEY` : clé service role (Settings > API)
+| Variable | Où trouver | Description |
+|----------|-----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase > Settings > API | URL du projet |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase > Settings > API | Clé publique anon |
 
-### Schéma Supabase
+### Supabase
+
+Le projet Supabase `ai-sdr-platform` contient déjà la table :
 
 ```sql
 CREATE TABLE waitlist (
@@ -43,6 +47,8 @@ CREATE TABLE waitlist (
   source TEXT NOT NULL DEFAULT 'landing',
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
+-- RLS: INSERT autorisé pour les utilisateurs anonymes
+-- RLS: SELECT autorisé pour les utilisateurs authentifiés
 ```
 
 ### Lancement
@@ -56,4 +62,7 @@ Ouvre [http://localhost:3000](http://localhost:3000).
 ## Déploiement
 
 Le projet est auto-déployé sur Vercel à chaque push sur `main`.
-Ajouter les variables d'environnement dans Vercel > Settings > Environment Variables.
+
+Variables d'environnement à ajouter dans Vercel > Settings > Environment Variables :
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
